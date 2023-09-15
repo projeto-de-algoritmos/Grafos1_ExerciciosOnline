@@ -20,7 +20,7 @@ Temas:
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 20/0056603 |  Alex Gabriel Alves Faustino |
 | xx/xxxxxx  |  xxxx xxxx xxxxx |
 
 ## Sobre 
