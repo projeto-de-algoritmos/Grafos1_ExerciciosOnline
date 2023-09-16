@@ -13,18 +13,67 @@ typedef struct Grafo{
 }Grafo;
 
 Grafo *InicializaGrafo(int v);
+void CaminhosPossiveis(Grafo *G, Aresta I);
 Aresta RetornaAresta (int v, int w);
+void ImprimeGrafo(Grafo *G);
 int **InicializaMatriz (int linhas, int colunas, int valor);
 void InsereArestaGrafo(Grafo *G, Aresta E);
+int ConverteLetra(char L);
 
 int main(){
    Grafo *grafo;
+   Aresta inicio;
+   Aresta final;
+
+   int n;
+
+   scanf("%d", &n);
 
    grafo = InicializaGrafo(8);
+
+   for(int i=0; i<n; i++){
+		char w;
+		int v;	
+
+		scanf(" %c", &w);
+		scanf("%d", &v);
+
+		inicio.w = ConverteLetra(w);
+		inicio.v = v - 1;
+		
+		InsereArestaGrafo(grafo, inicio);
+
+		scanf(" %c", &w);
+		scanf("%d", &v);
+
+		final.w = ConverteLetra(w);
+		final.v = v - 1;
+
+
+   		InsereArestaGrafo(grafo, final);
+   }
+   
+   ImprimeGrafo(grafo);
 
    return 0;
 }
 
+void ImprimeGrafo(Grafo *G){
+	for(int i =0;i<8;i++){
+		for(int j=0; j<8;j++){
+			printf("%d ", G->adj[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+int ConverteLetra(char L){
+	return L - 97;
+}
+
+void CaminhosPossiveis(Grafo *G, Aresta I){
+
+}
 
 void InsereArestaGrafo(Grafo *G, Aresta E){
 	int v = E.v;
@@ -38,6 +87,8 @@ void InsereArestaGrafo(Grafo *G, Aresta E){
 	//Se for um grafo não-direcionado, vamos preencher ambos os vértices.
 	G->adj[v][w] = 1;
 	G->adj[w][v] = 1;
+
+	//printf("M[%d][%d]=%d", v , w, G->adj[v][w]);
 	
 }
 
