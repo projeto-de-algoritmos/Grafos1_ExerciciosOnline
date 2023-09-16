@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 typedef struct Aresta {
-	int v;   //vértice v
-	int w;   //vértice w;
+	int v;   //linha
+	int w;   //coluna;
 }Aresta;
 
 typedef struct Grafo{
@@ -19,6 +19,7 @@ void ImprimeGrafo(Grafo *G);
 int **InicializaMatriz (int linhas, int colunas, int valor);
 void InsereArestaGrafo(Grafo *G, Aresta E);
 int ConverteLetra(char L);
+void LimpaGrafo(Grafo *G);
 
 int main(){
    Grafo *grafo;
@@ -49,11 +50,17 @@ int main(){
 		final.w = ConverteLetra(w);
 		final.v = v - 1;
 
+   	InsereArestaGrafo(grafo, final);
 
-   		InsereArestaGrafo(grafo, final);
+		CaminhosPossiveis(grafo, inicio);
+
+		ImprimeGrafo(grafo);
+
+		printf("\n\n");
+
+		LimpaGrafo(grafo);
    }
    
-   ImprimeGrafo(grafo);
 
    return 0;
 }
@@ -72,7 +79,77 @@ int ConverteLetra(char L){
 }
 
 void CaminhosPossiveis(Grafo *G, Aresta I){
+	//Verificar se não extrapola a matriz
+	//Verificar se o vizinho já foi visitado
 
+	// int v;   //linha
+	// int w;   //coluna;
+
+	//Se os vizinhos do vértice extrapolam a matriz ou todos já foram visitados, sai
+
+	//Movimento 1
+	if(I.v - 2 >= 0 && I.w - 1 >= 0){
+		if(G->adj[I.v-2][I.w-1] == 0){
+			G->adj[I.v-2][I.w-1] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v-2, I.w-1));
+		}
+	}
+
+	//Movimento 2
+	if(I.v - 1 >= 0 && I.w - 2 >= 0){
+		if(G->adj[I.v-1][I.w-2] == 0){
+			G->adj[I.v-1][I.w-2] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v-1, I.w-2));
+		}
+	}
+
+	//Movimento 3
+	if(I.v - 2 >= 0 && I.w + 1 <= 7){
+		if(G->adj[I.v-2][I.w+1] == 0){
+			G->adj[I.v-2][I.w+1] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v-2, I.w+1));
+		}
+	}	
+	
+	//Movimento 4
+	if(I.v - 1 >= 0 && I.w + 2 <= 7){
+		if(G->adj[I.v-1][I.w+2] == 0){
+			G->adj[I.v-1][I.w+2] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v-1, I.w+2));
+		}
+	}	
+		
+	//Movimento 5
+	if(I.v + 1 <= 7 && I.w - 2 >= 0){
+		if(G->adj[I.v+1][I.w-2] == 0){
+			G->adj[I.v+1][I.w-2] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v+1, I.w-2));
+		}
+	}	
+
+	//Movimento 6
+	if(I.v + 2 <= 7 && I.w - 1 >= 0){
+		if(G->adj[I.v+2][I.w-1] == 0){
+			G->adj[I.v+2][I.w-1] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v+2, I.w-1));
+		}
+	}	
+
+	//Movimento 7
+	if(I.v + 2 <= 7 && I.w + 1 <= 7){
+		if(G->adj[I.v+2][I.w+1] == 0){
+			G->adj[I.v+2][I.w+1] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v+2, I.w+1));
+		}
+	}	
+
+	//Movimento 8
+	if(I.v + 1 <= 7 && I.w + 2 <= 7){
+		if(G->adj[I.v+1][I.w+2] == 0){
+			G->adj[I.v+1][I.w+2] = 1;
+			// CaminhosPossiveis(G, RetornaAresta(I.v+1, I.w+2));
+		}
+	}	
 }
 
 void InsereArestaGrafo(Grafo *G, Aresta E){
@@ -86,7 +163,6 @@ void InsereArestaGrafo(Grafo *G, Aresta E){
 
 	//Se for um grafo não-direcionado, vamos preencher ambos os vértices.
 	G->adj[v][w] = 1;
-	G->adj[w][v] = 1;
 
 	//printf("M[%d][%d]=%d", v , w, G->adj[v][w]);
 	
@@ -123,4 +199,12 @@ Aresta RetornaAresta(int v, int w){
 	E.w = w;
 
 	return E;
+}
+
+void LimpaGrafo(Grafo *G){
+	for(int i =0;i<8;i++){
+		for(int j=0; j<8;j++){
+			G->adj[i][j] = 0;
+		}
+	}
 }
