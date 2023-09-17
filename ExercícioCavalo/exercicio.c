@@ -12,14 +12,27 @@ typedef struct Grafo{
    int **adj; //matriz
 }Grafo;
 
+typedef struct itemLista
+{
+    struct itemLista *prox;
+    Aresta vertice;
+}item;
+
+item *cria_fila();
+item *enfileira(item *cabeca, Aresta vertice);
+Aresta desenfileira(item *le);
+
+int ConverteLetra(char L);
+
 Grafo *InicializaGrafo(int v);
-void CaminhosPossiveis(Grafo *G, Aresta I);
-Aresta RetornaAresta (int v, int w);
-void ImprimeGrafo(Grafo *G);
 int **InicializaMatriz (int linhas, int colunas, int valor);
 void InsereArestaGrafo(Grafo *G, Aresta E);
-int ConverteLetra(char L);
+void ImprimeGrafo(Grafo *G);
+Aresta RetornaAresta (int v, int w);
 void LimpaGrafo(Grafo *G);
+void CaminhosPossiveis(Grafo *G, Aresta I);
+int BFS(Grafo *G, Aresta inicio, Aresta destino);
+
 
 int main(){
    Grafo *grafo;
@@ -60,9 +73,83 @@ int main(){
 
 		LimpaGrafo(grafo);
    }
-   
 
    return 0;
+}
+
+item *cria_fila(){
+    item *cabeca = malloc(sizeof(item));
+    cabeca->prox = cabeca;
+
+    return cabeca;
+}
+
+item *enfileira(item *cabeca, Aresta vertice){
+    item *novo = malloc(sizeof(item));
+    if(novo){
+        novo-> prox = cabeca->prox;
+        cabeca->prox = novo;
+        cabeca->vertice = vertice;
+        return novo;
+    }
+    else{
+        printf("Não foi possível alocar uma nova célula.\n");
+        return;
+    }
+    //Chamada -- le = enfileira(le, numero);
+}
+
+Aresta desenfileira(item *le){
+    item *removido = le->prox;
+    Aresta vertice;
+
+    removido->prox = le->prox;
+    le->prox = removido->prox;
+    vertice = removido->vertice;
+    free(removido);
+    return vertice;
+}
+
+int ConverteLetra(char L){
+	return L - 97;
+}
+
+Grafo *InicializaGrafo(int v){
+	Grafo *G = malloc(sizeof(G));  
+	G->V = v;  
+	G->E = 0;  
+	G->adj = InicializaMatriz(v, v, 0);
+
+	return G;  
+}
+
+int **InicializaMatriz (int linhas, int colunas, int valor){
+	int **matrix = malloc(linhas * (sizeof(int*)));  //Alocando as linhas
+
+	for(int i = 0; i < linhas; i++)
+		matrix[i] = malloc(colunas * sizeof(int*));   //Alocando as colunas
+
+	for (int i = 0; i < linhas; i++)
+		for(int j = 0; j < colunas; j++)
+			matrix[i][j] = valor;
+
+	return matrix;
+}
+
+void InsereArestaGrafo(Grafo *G, Aresta E){
+	int v = E.v;
+	int w = E.w;
+
+	//Se a aresta não foi inserida antes, vamos incrementar a quantidade de arestas	
+	if(G->adj[v][w] == 0){
+		G->E++;
+	}
+
+	//Se for um grafo não-direcionado, vamos preencher ambos os vértices.
+	G->adj[v][w] = 1;
+
+	//printf("M[%d][%d]=%d", v , w, G->adj[v][w]);
+	
 }
 
 void ImprimeGrafo(Grafo *G){
@@ -74,8 +161,21 @@ void ImprimeGrafo(Grafo *G){
 	}
 }
 
-int ConverteLetra(char L){
-	return L - 97;
+Aresta RetornaAresta(int v, int w){
+	Aresta E;
+
+	E.v = v;
+	E.w = w;
+
+	return E;
+}
+
+void LimpaGrafo(Grafo *G){
+	for(int i =0;i<8;i++){
+		for(int j=0; j<8;j++){
+			G->adj[i][j] = 0;
+		}
+	}
 }
 
 void CaminhosPossiveis(Grafo *G, Aresta I){
@@ -152,59 +252,6 @@ void CaminhosPossiveis(Grafo *G, Aresta I){
 	}	
 }
 
-void InsereArestaGrafo(Grafo *G, Aresta E){
-	int v = E.v;
-	int w = E.w;
+int BFS(Grafo *G, Aresta inicio, Aresta destino){
 
-	//Se a aresta não foi inserida antes, vamos incrementar a quantidade de arestas	
-	if(G->adj[v][w] == 0){
-		G->E++;
-	}
-
-	//Se for um grafo não-direcionado, vamos preencher ambos os vértices.
-	G->adj[v][w] = 1;
-
-	//printf("M[%d][%d]=%d", v , w, G->adj[v][w]);
-	
-}
-
-Grafo *InicializaGrafo(int v){
-	Grafo *G = malloc(sizeof(G));  
-	G->V = v;  
-	G->E = 0;  
-	G->adj = InicializaMatriz(v, v, 0);
-
-	return G;  
-}
-
-
-int **InicializaMatriz (int linhas, int colunas, int valor){
-	int **matrix = malloc(linhas * (sizeof(int*)));  //Alocando as linhas
-
-	for(int i = 0; i < linhas; i++)
-		matrix[i] = malloc(colunas * sizeof(int*));   //Alocando as colunas
-
-	for (int i = 0; i < linhas; i++)
-		for(int j = 0; j < colunas; j++)
-			matrix[i][j] = valor;
-
-	return matrix;
-}
-
-
-Aresta RetornaAresta(int v, int w){
-	Aresta E;
-
-	E.v = v;
-	E.w = w;
-
-	return E;
-}
-
-void LimpaGrafo(Grafo *G){
-	for(int i =0;i<8;i++){
-		for(int j=0; j<8;j++){
-			G->adj[i][j] = 0;
-		}
-	}
 }
