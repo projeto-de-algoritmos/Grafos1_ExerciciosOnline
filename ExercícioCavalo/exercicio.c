@@ -2,25 +2,31 @@
 #include <stdlib.h>
 
 typedef struct Aresta {
-	int v;   //linha
-	int w;   //coluna;
+	int v;  
+	int w;   
 }Aresta;
 
 typedef struct Grafo{
-	int V;  //quantidade de vértices;
-	int E;  //quantidade de arestas;
-   int **adj; //matriz
+	int V;  
+	int E;  
+   int **adj; 
 }Grafo;
 
-typedef struct itemLista
-{
-    struct itemLista *prox;
+typedef struct itemLista {
+    struct itemLista *next;
     Aresta vertice;
-}item;
+} item;
 
-item *cria_fila();
-item *enfileira(item *cabeca, Aresta vertice);
-Aresta desenfileira(item *le);
+typedef struct Fila {
+    item *front;
+    item *rear;
+} Fila;
+
+Fila *cria_fila();
+void enfileira(Fila *fila, Aresta valor);
+Aresta desenfileira(Fila *fila);
+void libera_fila(Fila *fila);
+void imprime_fila(Fila *fila);
 
 int ConverteLetra(char L);
 
@@ -30,7 +36,7 @@ void InsereArestaGrafo(Grafo *G, Aresta E);
 void ImprimeGrafo(Grafo *G);
 Aresta RetornaAresta (int v, int w);
 void LimpaGrafo(Grafo *G);
-void CaminhosPossiveis(Grafo *G, Aresta I);
+
 int BFS(Grafo *G, Aresta inicio, Aresta destino);
 
 
@@ -46,6 +52,7 @@ int main(){
    grafo = InicializaGrafo(8);
 
    for(int i=0; i<n; i++){
+	    Fila *fila = cria_fila();
 		char w;
 		int v;	
 
@@ -63,51 +70,78 @@ int main(){
 		final.w = ConverteLetra(w);
 		final.v = v - 1;
 
-   	InsereArestaGrafo(grafo, final);
+   		InsereArestaGrafo(grafo, final);
 
-		CaminhosPossiveis(grafo, inicio);
-
-		ImprimeGrafo(grafo);
-
-		printf("\n\n");
-
+		printf("%d\n", BFS(grafo, inicio, final));
+        
 		LimpaGrafo(grafo);
+		libera_fila(fila);
    }
 
    return 0;
 }
 
-item *cria_fila(){
-    item *cabeca = malloc(sizeof(item));
-    cabeca->prox = cabeca;
-
-    return cabeca;
-}
-
-item *enfileira(item *cabeca, Aresta vertice){
-    item *novo = malloc(sizeof(item));
-    if(novo){
-        novo-> prox = cabeca->prox;
-        cabeca->prox = novo;
-        cabeca->vertice = vertice;
-        return novo;
-    }
-    else{
-        printf("Não foi possível alocar uma nova célula.\n");
+void imprime_fila(Fila *fila) {
+    if (fila->front == NULL) {
         return;
     }
-    //Chamada -- le = enfileira(le, numero);
+
+    item *atual = fila->front;
+    while (atual != NULL) {
+        printf("%d %d -> ", atual->vertice.v, atual->vertice.w);
+        atual = atual->next;
+    }
+
+    printf("\n");
 }
 
-Aresta desenfileira(item *le){
-    item *removido = le->prox;
-    Aresta vertice;
 
-    removido->prox = le->prox;
-    le->prox = removido->prox;
-    vertice = removido->vertice;
-    free(removido);
-    return vertice;
+Fila *cria_fila() {
+    Fila *fila = malloc(sizeof(Fila));
+    fila->front = fila->rear = NULL;
+    return fila;
+}
+
+void enfileira(Fila *fila, Aresta valor) {
+    item *novo = malloc(sizeof(item));
+    novo->vertice = valor;
+    novo->next = NULL;
+
+    if (fila->rear == NULL) {
+        fila->front = fila->rear = novo;
+        return;
+    }
+
+    fila->rear->next = novo;
+    fila->rear = novo;
+}
+
+Aresta desenfileira(Fila *fila) {
+    if (fila->front == NULL) {
+        printf("A fila está vazia.\n");
+        return RetornaAresta(-1,-1); 
+    }
+
+    item *temp = fila->front;
+    Aresta valor = temp->vertice;
+
+    fila->front = fila->front->next;
+
+    if (fila->front == NULL) {
+        fila->rear = NULL;
+    }
+
+    free(temp);
+    return valor;
+}
+
+void libera_fila(Fila *fila) {
+    while (fila->front != NULL) {
+        item *temp = fila->front;
+        fila->front = fila->front->next;
+        free(temp);
+    }
+    free(fila);
 }
 
 int ConverteLetra(char L){
@@ -124,10 +158,10 @@ Grafo *InicializaGrafo(int v){
 }
 
 int **InicializaMatriz (int linhas, int colunas, int valor){
-	int **matrix = malloc(linhas * (sizeof(int*)));  //Alocando as linhas
+	int **matrix = malloc(linhas * (sizeof(int*)));  
 
 	for(int i = 0; i < linhas; i++)
-		matrix[i] = malloc(colunas * sizeof(int*));   //Alocando as colunas
+		matrix[i] = malloc(colunas * sizeof(int*));   
 
 	for (int i = 0; i < linhas; i++)
 		for(int j = 0; j < colunas; j++)
@@ -140,16 +174,11 @@ void InsereArestaGrafo(Grafo *G, Aresta E){
 	int v = E.v;
 	int w = E.w;
 
-	//Se a aresta não foi inserida antes, vamos incrementar a quantidade de arestas	
 	if(G->adj[v][w] == 0){
 		G->E++;
 	}
 
-	//Se for um grafo não-direcionado, vamos preencher ambos os vértices.
-	G->adj[v][w] = 1;
-
-	//printf("M[%d][%d]=%d", v , w, G->adj[v][w]);
-	
+	G->adj[v][w] = 1;	
 }
 
 void ImprimeGrafo(Grafo *G){
@@ -178,80 +207,72 @@ void LimpaGrafo(Grafo *G){
 	}
 }
 
-void CaminhosPossiveis(Grafo *G, Aresta I){
-	//Verificar se não extrapola a matriz
-	//Verificar se o vizinho já foi visitado
+int BFS(Grafo *G, Aresta inicio, Aresta destino) {
+    int **matrizAuxiliar = InicializaMatriz(8, 8, -1);
 
-	// int v;   //linha
-	// int w;   //coluna;
+    Fila *fila = cria_fila();
 
-	//Se os vizinhos do vértice extrapolam a matriz ou todos já foram visitados, sai
+    enfileira(fila, inicio);
+    matrizAuxiliar[inicio.v][inicio.w] = 0;
 
-	//Movimento 1
-	if(I.v - 2 >= 0 && I.w - 1 >= 0){
-		if(G->adj[I.v-2][I.w-1] == 0){
-			G->adj[I.v-2][I.w-1] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v-2, I.w-1));
-		}
-	}
+    while (fila->front != NULL) {
+        Aresta verticeAtual = desenfileira(fila);
 
-	//Movimento 2
-	if(I.v - 1 >= 0 && I.w - 2 >= 0){
-		if(G->adj[I.v-1][I.w-2] == 0){
-			G->adj[I.v-1][I.w-2] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v-1, I.w-2));
-		}
-	}
+        int v = verticeAtual.v;
+        int w = verticeAtual.w;
 
-	//Movimento 3
-	if(I.v - 2 >= 0 && I.w + 1 <= 7){
-		if(G->adj[I.v-2][I.w+1] == 0){
-			G->adj[I.v-2][I.w+1] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v-2, I.w+1));
-		}
-	}	
-	
-	//Movimento 4
-	if(I.v - 1 >= 0 && I.w + 2 <= 7){
-		if(G->adj[I.v-1][I.w+2] == 0){
-			G->adj[I.v-1][I.w+2] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v-1, I.w+2));
-		}
-	}	
-		
-	//Movimento 5
-	if(I.v + 1 <= 7 && I.w - 2 >= 0){
-		if(G->adj[I.v+1][I.w-2] == 0){
-			G->adj[I.v+1][I.w-2] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v+1, I.w-2));
-		}
-	}	
+        if (v == destino.v && w == destino.w) {
+            return matrizAuxiliar[v][w]; 
+        }
 
-	//Movimento 6
-	if(I.v + 2 <= 7 && I.w - 1 >= 0){
-		if(G->adj[I.v+2][I.w-1] == 0){
-			G->adj[I.v+2][I.w-1] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v+2, I.w-1));
-		}
-	}	
+        // Movimento 1
+        if (v - 2 >= 0 && w - 1 >= 0 && matrizAuxiliar[v-2][w-1] == -1) {
+            matrizAuxiliar[v-2][w-1] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v-2, w-1));
+        }
 
-	//Movimento 7
-	if(I.v + 2 <= 7 && I.w + 1 <= 7){
-		if(G->adj[I.v+2][I.w+1] == 0){
-			G->adj[I.v+2][I.w+1] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v+2, I.w+1));
-		}
-	}	
+        // Movimento 2
+        if (v - 1 >= 0 && w - 2 >= 0 && matrizAuxiliar[v-1][w-2] == -1) {
+            matrizAuxiliar[v-1][w-2] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v-1, w-2));
+        }
 
-	//Movimento 8
-	if(I.v + 1 <= 7 && I.w + 2 <= 7){
-		if(G->adj[I.v+1][I.w+2] == 0){
-			G->adj[I.v+1][I.w+2] = 1;
-			// CaminhosPossiveis(G, RetornaAresta(I.v+1, I.w+2));
-		}
-	}	
-}
+        // Movimento 3
+        if (v - 2 >= 0 && w + 1 <= 7 && matrizAuxiliar[v-2][w+1] == -1) {
+            matrizAuxiliar[v-2][w+1] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v-2, w+1));
+        }
 
-int BFS(Grafo *G, Aresta inicio, Aresta destino){
+        // Movimento 4
+        if (v - 1 >= 0 && w + 2 <= 7 && matrizAuxiliar[v-1][w+2] == -1) {
+            matrizAuxiliar[v-1][w+2] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v-1, w+2));
+        }
 
+        // Movimento 5
+        if (v + 1 <= 7 && w - 2 >= 0 && matrizAuxiliar[v+1][w-2] == -1) {
+            matrizAuxiliar[v+1][w-2] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v+1, w-2));
+        }
+
+        // Movimento 6
+        if (v + 2 <= 7 && w - 1 >= 0 && matrizAuxiliar[v+2][w-1] == -1) {
+            matrizAuxiliar[v+2][w-1] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v+2, w-1));
+        }
+
+        // Movimento 7
+        if (v + 2 <= 7 && w + 1 <= 7 && matrizAuxiliar[v+2][w+1] == -1) {
+            matrizAuxiliar[v+2][w+1] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v+2, w+1));
+        }
+
+        // Movimento 8
+        if (v + 1 <= 7 && w + 2 <= 7 && matrizAuxiliar[v+1][w+2] == -1) {
+            matrizAuxiliar[v+1][w+2] = matrizAuxiliar[v][w] + 1;
+            enfileira(fila, RetornaAresta(v+1, w+2));
+        }
+    }
+
+    return -1; 
 }
