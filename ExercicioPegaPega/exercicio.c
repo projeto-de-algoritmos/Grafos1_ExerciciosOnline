@@ -8,12 +8,7 @@ typedef struct Aresta
     int w; //vértice w
 }Aresta;
 
-//Estrutura do Grafo
-typedef struct Grafo{
-    int V; //quantidade de vértices
-    int E; //quantidade de arestas
-    link *adj; //array de ponteiros para nós
-}Grafo;
+
 
 //Estrutura do nó (node)
 typedef struct itemLista{
@@ -23,6 +18,13 @@ typedef struct itemLista{
 
 typedef item *link; //Link é um ponteiro para nó
 
+//Estrutura do Grafo
+typedef struct Grafo{
+    int V; //quantidade de vértices
+    int E; //quantidade de arestas
+    link *adj; //array de ponteiros para nós
+}Grafo;
+
 Aresta RetornaAresta(int v, int w);           //Função que retorna uma aresta
 link Enfileira (int v, item *next);           //Função que retorna um elemento da lista
 
@@ -31,7 +33,18 @@ void InsereArestaGrafo(Grafo *G, Aresta e);   //Função que insere aresta no gr
 void ImprimeGrafo(Grafo *G);
 
 int main(){
+    
+    int qtdVertices;
+    scanf("%d", &qtdVertices);
+    Grafo *G = InicializaGrafo(qtdVertices+1);
+    scanf("%d");
 
+    for(int i =0; i< qtdVertices;i++){
+        int v, w;
+        scanf("%d %d", &v, &w);
+        InsereArestaGrafo(G, RetornaAresta(v, w));
+    }
+    ImprimeGrafo(G);
     return 0;
 }
 
@@ -75,8 +88,8 @@ void InsereArestaGrafo(Grafo *G, Aresta e){
     int v = e.v;
     int w = e.w;
 
-    G->adj[v] = NEW(w, G->adj[v]);
-    G->adj[w] = NEW(v, G->adj[w]);
+    G->adj[v] = Enfileira(w, G->adj[v]);
+    G->adj[w] = Enfileira(v, G->adj[w]);
 
     G->E++;
 }
