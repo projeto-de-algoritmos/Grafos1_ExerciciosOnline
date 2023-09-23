@@ -44,5 +44,5 @@ Perfil de envio
 
 ## Explicação do codigo
 
-A esplicação pode ser encontrada clicando [Aqui!](https://youtu.be/1y4jNi71_tM)  
+A explicação pode ser encontrada clicando [Aqui!](https://youtu.be/1y4jNi71_tM)  
 O vídeo também pode ser encontrado na pasta "Assets" do repositório!
