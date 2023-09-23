@@ -5,7 +5,7 @@ Anjali and Nakul are good friends. They both had a quarrel recently while playin
 
 A knight can move in the shape of an "L" in a chessboard - two squares either forward, backward, left, or right and then one square to its left or right. A knight move is valid if it moves as mentioned above and it is within the boundary of the chessboard (8 × 8).
 
-![](https://www.spoj.com/content/francky:knight)
+![](../Assets/Cavalo/tabuleiroMovs.png)
 
 ## Input
 There are T test cases in total. The next T lines contain two strings (start and destination) separated by a space.
