@@ -46,3 +46,9 @@ Perfil de envio
 
 A explicação pode ser encontrada clicando [Aqui!](https://youtu.be/1y4jNi71_tM)  
 O vídeo também pode ser encontrado na pasta "Assets" do repositório!
+
+
+## Referência
+
+O exercício se encontra no link abaixo:
+- [Sphere online judge](https://www.spoj.com/problems/NAKANJ/)
