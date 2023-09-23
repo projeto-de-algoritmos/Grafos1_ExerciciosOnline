@@ -44,4 +44,5 @@ Perfil de envio
 
 ## Explicação do codigo
 
-[Video explicando](../Assets/Cavalo/ExplicaCodCavalo.mkv)
+[Video explicando](https://youtu.be/1y4jNi71_tM)
+O vídeo também pode ser encontrado na pasta "Assets" do repositório!
