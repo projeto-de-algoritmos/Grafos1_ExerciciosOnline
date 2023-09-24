@@ -1,55 +1,54 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//Estrutura da Aresta (RetornaAresta)
 typedef struct Aresta
 {
-    int v; //vértice v
-    int w; //vértice w
+    int v; 
+    int w; 
 }Aresta;
 
-
-
-//Estrutura do nó (node)
 typedef struct itemLista{
     struct itemLista *next; 
-    int vertice; //vértice v
+    int vertice; 
     int visitado;
 }item;
 
-typedef item *link; //Link é um ponteiro para nó
+typedef item *link;
 
-//Estrutura do Grafo
 typedef struct Grafo{
-    int V; //quantidade de vértices
-    int E; //quantidade de arestas
-    link *adj; //array de ponteiros para nós
+    int V; 
+    int E; 
+    link *adj;
 }Grafo;
 
-Aresta RetornaAresta(int v, int w);           //Função que retorna uma aresta
-link Enfileira (int v, item *next);           //Função que retorna um elemento da lista
+Aresta RetornaAresta(int v, int w);    
+link Enfileira (int v, item *next);          
 
-Grafo *InicializaGrafo(int v);                //Função que inicializa o grafo
-void InsereArestaGrafo(Grafo *G, Aresta e);   //Função que insere aresta no grafo
+Grafo *InicializaGrafo(int v);                
+void InsereArestaGrafo(Grafo *G, Aresta e);   
 void ImprimeGrafo(Grafo *G);
 
-void DFS_visit(Grafo *G, link t);
+void DFS_visit(Grafo *G, link t, int time);
 void DFS (Grafo *G);
+int BFS(Grafo *G, int start);
 
 int main(){
     
     int qtdVertices, posicaoMenino;
     scanf("%d %d ", &qtdVertices, &posicaoMenino);
-    Grafo *G = InicializaGrafo(qtdVertices+1);
+    Grafo *G = InicializaGrafo(qtdVertices+10);
 
-    for(int i = 1; i< qtdVertices; i++){
+    for(int i = 1; i < qtdVertices; i++){
         int v, w;
         scanf("%d %d", &v, &w);
         InsereArestaGrafo(G, RetornaAresta(v, w));
     }
 
-    DFS(G);
-    // ImprimeGrafo(G);
+
+        int camada = BFS(G, 1);
+        camada = (camada - 1) * 2;
+        printf("%d", camada);
+    
     return 0;
 }
 
@@ -122,21 +121,32 @@ void ImprimeGrafo(Grafo *G){
     
 }
 
-void DFS_visit(Grafo *G, link t){
-    t->visitado = 1;
-    for(link w = G->adj[t->vertice]; w != NULL; w = w->next){
-        if(w->visitado!=1){         
-            DFS_visit(G, w);
-        }
-    }
-}
+int BFS(Grafo *G, int start){
+    int *visitado = malloc(G->V * sizeof(int));
+    for(int i = 0; i < G->V; i++)
+        visitado[i] = 0;
 
-void DFS (Grafo *G){
-    for (int v = 0; v < G->V; v++){
-        for(link t = G->adj[v]; t != NULL; t = t->next){
-            if(t->visitado!=1){         
-                DFS_visit(G, t);
+    int *fila = malloc(G->V * sizeof(int));
+    int inicio = 0, fim = 0;
+    int camadas = -1;
+
+    visitado[start] = 1;
+    fila[fim++] = start;
+
+    while (inicio != fim) {
+        int v = fila[inicio++];
+        if (visitado[v] > camadas)
+            camadas = visitado[v];
+        
+        for (link t = G->adj[v]; t != NULL; t = t->next) {
+            int w = t->vertice;
+            if (!visitado[w]) {
+                visitado[w] = visitado[v] + 1;
+                fila[fim++] = w;
             }
         }
     }
+    free(visitado);
+    free(fila);
+    return camadas;
 }
