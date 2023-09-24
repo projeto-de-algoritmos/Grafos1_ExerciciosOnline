@@ -9,7 +9,7 @@
 #define cmpexch(A,B) { if (less(B,A)) exch(A,B); }
 
 typedef struct node{
-    int v; //vértice v
+    int v; 
     struct node *next; 
 }node;
 
