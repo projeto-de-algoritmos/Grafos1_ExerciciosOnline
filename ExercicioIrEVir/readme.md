@@ -40,9 +40,7 @@ For each test case your program should print a single line containing an integer
 ## Resultado
 
 O código foi enviado ao juíz online, tendo como resultado Accepted.
-![](../Assets/Ir%20E%20Vir/IrEVirSubmissão.png)
 
-Aceito!
 ![](../Assets/Ir%20E%20Vir/IrEVirAccepted.png)
 
 Perfil de envio
