@@ -33,6 +33,10 @@ h8 c3
 4  
 ## Resultado
 
+Para auxiliar na criação do código, foi criado um tabuleiro no LucidChart para estudar quais são os possíveis movimentos do cavalo, conforme ilustrado a seguir:
+
+![](../Assets/Cavalo/estudoMovimentos.png)
+
 Enviado ao juiz online!
 ![](../Assets/Cavalo/CavaloAccepted.png)
 
