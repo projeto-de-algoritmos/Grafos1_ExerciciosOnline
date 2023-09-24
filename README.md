@@ -10,21 +10,27 @@
 | 18/0022512 |  Lucas de Lima Spinosa dos Santos |
 
 ## Sobre 
-Neste repositório estão soluções para exercícios de grafos de juízes online. 
+
+Neste repositório estão 4 questões sobre o conteúdo do módulo de Grafos 1. O código fonte das questões, juntamente com maiores detalhes a respeito das mesmas (como o enunciado, por exemplo), se encontram nas pastas.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+
+![](./Assets/Ir%20E%20Vir/IrEVirAccepted.png)
+![](./Assets/Cavalo/idSubmissao.png)
+![](./Assets/Juiz/cacaJuizAccepted.png)
+![](./Assets/Natureza/NaturezaAccepted.png)
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
+**Linguagem**: C<br>
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+Para rodar o código fonte, use o compilador GCC, gerando um arquivo executável a partir do código fonte, conforme o exemplo fictício abaixo.
 
+    gcc -o arquivoExecutavel.exe arquivoCodigoFonte.c
 
+    ./arquivoExecutavel.exe
 
+Caso queira carregar casos de teste presentes em um arquivo .txt, execute o arquivo de saída da compilação passando o .txt como entrada:
 
+    ./arquivoExecutavel.exe < testes.txt 
