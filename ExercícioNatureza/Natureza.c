@@ -8,37 +8,32 @@
 #define exch(A,B) { Item t; t=A;A=B;B=t; }
 #define cmpexch(A,B) { if (less(B,A)) exch(A,B); }
 
-
-//Parte de Grafo
-//Estrutura do nó (node)
 typedef struct node{
     int v; //vértice v
     struct node *next; 
 }node;
 
-typedef node *link; //Link é um ponteiro para nó
+typedef node *link; 
 
-//Estrutura da Aresta (Edge)
 typedef struct Edge
 {
-    int v; //vértice v
-    int w; //vértice w
+    int v; 
+    int w; 
 }Edge;
 
 
-//Estrutura do Grafo
 typedef struct graph{
-    int V; //quantidade de vértices
-    int E; //quantidade de arestas
-    link *adj; //array de ponteiros para nós
+    int V; 
+    int E; 
+    link *adj; 
 }Graph;
 
-Edge EDGE(int v, int w);                //Função que retorna uma aresta
-link NEW (int v, node *next);           //Função que retorna um elemento da lista
-Graph *GRAPHInit(int v);                //Função que inicializa o grafo
-void GRAPHInsert(Graph *G, Edge e);     //Função que insere aresta no grafo
-void dfsR(Graph *G, Edge e);            //Função de busca em profundidade
-void GRAPHSearch(Graph *G);             //Função de busca
+Edge EDGE(int v, int w);               
+link NEW (int v, node *next);        
+Graph *GRAPHInit(int v);                
+void GRAPHInsert(Graph *G, Edge e);     
+void dfsR(Graph *G, Edge e);            
+void GRAPHSearch(Graph *G);          
 
 typedef struct animal{
     char nome[31];
@@ -72,7 +67,6 @@ int main(){
             dados[i] = elemento_A;
         }
 
-        //Ordena o vetor
         quicksortM3(dados,0, C-1);
 
         for (int i = 0; i < R; i++){
