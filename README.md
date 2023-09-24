@@ -13,6 +13,8 @@
 
 Neste repositório estão 4 questões sobre o conteúdo do módulo de Grafos 1. O código fonte das questões, juntamente com maiores detalhes a respeito das mesmas (como o enunciado, por exemplo), se encontram nas pastas.
 
+(O exercício PegaPega não pôde ser completado com êxito, não recebendo Accepted do juíz online em questão. Porém, em respeito ao tempo e esforço colocados na resolução, decidimos por deixar o código, mesmo que falho, no repositório, juntamente com o enunciado da questão)
+
 ## Screenshots
 
 ![](./Assets/Ir%20E%20Vir/IrEVirAccepted.png)
