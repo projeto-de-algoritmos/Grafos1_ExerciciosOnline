@@ -147,7 +147,7 @@ void dfsR(Graph *G, Edge e){
 }   
 
 void GRAPHSearch(Graph *G){
-    int v, conexos = 0;
+    int v;
     seres_cadeia = 0;
     int maior_cadeia;
 
@@ -162,7 +162,6 @@ void GRAPHSearch(Graph *G){
             maior_cadeia = 0;
         }
         if(pre[v] == -1){
-            seres_cadeia = 0;
             dfsR(G, EDGE(v, v));
             
             if(seres_cadeia > maior_cadeia){
