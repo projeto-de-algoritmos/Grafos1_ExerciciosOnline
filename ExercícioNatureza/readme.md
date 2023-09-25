@@ -43,6 +43,11 @@ Aceito!
 Perfil de envio
 ![](../Assets/Natureza/perfilSpoj.png)
 
+## Explicação do codigo
+
+A explicação pode ser encontrada clicando [Aqui!](https://youtu.be/ZE4DPVuH7mw)  
+O vídeo também pode ser encontrado na pasta "Assets" do repositório!
+
 ## Referência
 
 O exercício se encontra no link abaixo:

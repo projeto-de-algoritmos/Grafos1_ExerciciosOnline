@@ -46,6 +46,12 @@ O código foi enviado ao juíz online, tendo como resultado Accepted.
 Perfil de envio
 ![](../Assets/Ir%20E%20Vir/PefilBeeCrowd.png)
 
+## Explicação do codigo
+
+A explicação pode ser encontrada clicando [Aqui!](https://youtu.be/3yseQ4GIVyw)  
+O vídeo também pode ser encontrado na pasta "Assets" do repositório!
+
+
 ## Referência
 
 O exercício se encontra no link abaixo:
