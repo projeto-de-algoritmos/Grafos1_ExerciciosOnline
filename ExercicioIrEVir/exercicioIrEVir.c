@@ -12,7 +12,8 @@ void profundidade( int ponto ){
  }else{
     visitados[ ponto ] = true;
     for( int i = 1; i <= N; i++ )
-    if( graph[ ponto ][ i ] && !visitados[ i ] ) profundidade( i );
+     if( graph[ ponto ][ i ] && !visitados[ i ] )
+      profundidade( i );
  }
 }
  
@@ -21,19 +22,21 @@ int main(){
     scanf(" %d", &N);
     while( N != 0 ){
         scanf(" %d", &P);
-        for( int i = 1; i <= N; i++ ){
+         for( int i = 1; i <= N; i++ ){
             visitados[ i ] = false;
-                for( int j = 1; j <= N; j++ ){
-                    graph[ i ][ j ] = false;
+               for( int j = 1; j <= N; j++ ){
+                   graph[ i ][ j ] = false;
                 }
-        }
+         }
  
         for( int i = 1; i <= P; i++ ){
             int c, d, sel;
             scanf(" %d %d %d", &c, &d, &sel);
+         
             if( sel == 1 ){
                 graph[ c ][ d ] = true; 
             }
+             
             else{
                 graph[ c ][ d ] = true;
                 graph[ d ][ c ] = true;
@@ -53,10 +56,12 @@ int main(){
             for( int i = 1; i <= N; i++ ){
                 visitados[ i ] = false;
                 for( int j = i+1; j <= N; j++ ){
-                    if( graph[ i ][ j ] && graph[ j ][ i ] ) continue;
+                    if( graph[ i ][ j ] && graph[ j ][ i ] )
+                      continue;
                     else if( graph[ i ][ j ] ){
                         graph[ j ][ i ] = true; graph[ i ][ j ] = false;
-                    }else if( graph[ j ][ i ] ){
+                    }
+                    else if( graph[ j ][ i ] ){
                         graph[ i ][ j ] = true; graph[ j ][ i ] = false;
                     }
                 }
